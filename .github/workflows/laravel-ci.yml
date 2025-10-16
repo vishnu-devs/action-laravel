@@ -72,9 +72,9 @@ jobs:
             npm run build --if-present
           else
             echo "No build script found in package.json — skipping build"
+          fi
         env:
           CI: true
-
       # 9️⃣ Run Laravel unit tests
       - name: Run Unit Tests
         run: php artisan test
