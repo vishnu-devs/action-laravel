@@ -53,7 +53,7 @@ jobs:
       
       # 9️⃣ Install Node dependencies
       - name: Install Node.js Dependencies
-        run: npm install -g npm@11.6.2
+        run: npm install -g
 
       # 🔟 Build frontend/assets
       - name: Build Project
