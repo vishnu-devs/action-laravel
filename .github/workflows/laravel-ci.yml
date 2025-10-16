@@ -100,4 +100,3 @@ jobs:
             **/node_modules/**
             **/tests/**
             **/.env
-            **/README.md
