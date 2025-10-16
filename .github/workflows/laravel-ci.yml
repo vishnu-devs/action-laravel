@@ -75,6 +75,9 @@ jobs:
           fi
         env:
           CI: true
+
+      - name: Generate Autoload
+        run: composer dump-autoload --optimize
       # 9️⃣ Run Laravel unit tests
       - name: Run Unit Tests
         run: php artisan test
