@@ -60,8 +60,10 @@ jobs:
             fi
           else
             echo "package.json not found — skipping npm install"
+          fi
         env:
           CI: true
+
 
       # 8️⃣ Build front-end assets
       - name: Build Project
