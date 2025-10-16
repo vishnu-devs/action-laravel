@@ -21,6 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+Route::patch('/user/password', [ProfileController::class, 'updatePassword'])
+    ->name('password.update');
+
 // Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -67,10 +72,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'role:admin|super_admin'])->prefix('admin')->name('admin.')->group(function () {
     // Admin dashboard
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
+
     // User management
     Route::resource('users', UserController::class);
-    
+
     // Vendor requests management
     Route::resource('vendor-requests', AdminVendorRequestController::class)->only(['index', 'show', 'update']);
 });
@@ -87,7 +92,7 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     Route::post('remove-permission', [RolePermissionController::class, 'removePermission'])->name('roles-permissions.remove-permission');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // General products and orders routes mapped to Blade views
 Route::middleware(['auth'])->group(function () {
