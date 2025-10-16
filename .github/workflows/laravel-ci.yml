@@ -102,7 +102,5 @@ jobs:
             **/.github*
             **/node_modules/**
             **/tests/**
-            **/storage/**
-            **/vendor/**
             **/.env
             **/README.md
