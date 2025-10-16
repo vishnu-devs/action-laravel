@@ -10,14 +10,12 @@ on:
       - dev
 
 jobs:
-  build-and-deploy:
+  ci:
     runs-on: ubuntu-latest
     steps:
       # 1️⃣ Checkout code
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      # 2️⃣ Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -25,11 +23,16 @@ jobs:
           extensions: mbstring, bcmath, pdo_mysql
           coverage: none
 
-      # 3️⃣ Install Composer dependencies
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-      # 4️⃣ Copy .env if not exists
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist --no-interaction
+
       - name: Copy .env.example to .env
         run: |
           if [ ! -f .env ]; then
@@ -38,21 +41,20 @@ jobs:
             echo ".env already exists, skipping copy"
           fi
 
-      # 5️⃣ Generate Laravel app key
       - name: Generate Application Key
         run: php artisan key:generate
 
-      # 6️⃣ Setup Node.js
+      # Set up Node before running npm commands (prevents inconsistent npm/node versions)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '18'      # Use a stable LTS version (change to 16 or 20 if your project requires)
           cache: 'npm'
 
-      # 7️⃣ Install Node.js dependencies
-      - name: Install Node.js Dependencies
+      - name: Install Node.js Dependencies (if package.json exists)
         run: |
           if [ -f package.json ]; then
+            # Use npm ci for consistent installs (requires package-lock.json)
             if [ -f package-lock.json ]; then
               npm ci --no-audit --no-fund
             else
@@ -64,9 +66,7 @@ jobs:
         env:
           CI: true
 
-
-      # 8️⃣ Build front-end assets
-      - name: Build Project
+      - name: Build Project (if 'build' script exists)
         run: |
           if [ -f package.json ] && grep -q "\"build\"" package.json; then
             npm run build --if-present
@@ -76,13 +76,14 @@ jobs:
         env:
           CI: true
 
-      - name: Generate Autoload
-        run: composer dump-autoload --optimize
-      # 9️⃣ Run Laravel unit tests
       - name: Run Unit Tests
         run: php artisan test
+  deploy:
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
 
-      # 🔟 Deploy via FTP to Bluehost
+      # 2️⃣ Deploy via FTP to Bluehost
       - name: Deploy to Bluehost via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -91,12 +92,13 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: ./               # vendor folder included
+          local-dir: ./
           server-dir: ./
           exclude: |
             **/.git*
             **/.github*
             **/node_modules/**
             **/tests/**
+            **/vendor/**
             **/.env
             **/README.md
