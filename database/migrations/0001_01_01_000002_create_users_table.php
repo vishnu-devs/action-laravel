@@ -13,19 +13,21 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('company_id')->constrained()->cascadeOnDelete();  // Removed to avoid dependency on companies table
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // New columns
+            $table->tinyInteger('vendor_request')->default(0);
+            $table->tinyInteger('is_vendor')->default(0);
+
             $table->rememberToken();
             $table->timestamps();
-            $table->string('role')->default('user');
-            $table->boolean('vendor_request')->default(false);
-            $table->string('company_name')->nullable();
-            $table->string('company_address')->nullable();
-            $table->foreignId('company_id')->nullable()->constrained()->cascadeOnDelete();
         });
+
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
