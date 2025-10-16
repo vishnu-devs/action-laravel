@@ -16,15 +16,15 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @role('super_admin')
-                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                            {{ __('Users') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.roles-permissions.index')" :active="request()->routeIs('admin.roles-permissions.*')">
-                            {{ __('Roles & Permissions') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.vendor-requests.index')" :active="request()->routeIs('admin.vendor-requests.*')">
-                            {{ __('Vendor Requests') }}
-                        </x-nav-link>
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.roles-permissions.index')" :active="request()->routeIs('admin.roles-permissions.*')">
+                        {{ __('Roles & Permissions') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.vendor-requests.index')" :active="request()->routeIs('admin.vendor-requests.*')">
+                        {{ __('Vendor Requests') }}
+                    </x-nav-link>
                     @endrole
                     <x-nav-link href="/admin/products" :active="request()->is('admin/products*')">
                         {{ __('Products') }}
@@ -33,16 +33,16 @@
                         {{ __('Orders') }}
                     </x-nav-link>
                     @php
-                        $hasPendingVendorRequest = \App\Models\VendorRequest::where('user_id', auth()->id())
-                            ->where('status', 0)
-                            ->exists();
+                    $hasPendingVendorRequest = \App\Models\VendorRequest::where('user_id', auth()->id())
+                    ->where('status', 0)
+                    ->exists();
                     @endphp
                     @unlessrole('vendor')
-                        @if(!$hasPendingVendorRequest)
-                            <x-nav-link :href="route('vendor-request.create')" :active="request()->routeIs('vendor-request.*')">
-                                {{ __('Become a Vendor') }}
-                            </x-nav-link>
-                        @endif
+                    @if(!$hasPendingVendorRequest)
+                    <x-nav-link :href="route('vendor-request.create')" :active="request()->routeIs('vendor-request.*')">
+                        {{ __('Become a Vendor') }}
+                    </x-nav-link>
+                    @endif
                     @endunlessrole
                 </div>
             </div>
@@ -72,7 +72,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -100,15 +100,15 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @role('super_admin')
-                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                    {{ __('Users') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.roles-permissions.index')" :active="request()->routeIs('admin.roles-permissions.*')">
-                    {{ __('Roles & Permissions') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.vendor-requests.index')" :active="request()->routeIs('admin.vendor-requests.*')">
-                    {{ __('Vendor Requests') }}
-                </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.roles-permissions.index')" :active="request()->routeIs('admin.roles-permissions.*')">
+                {{ __('Roles & Permissions') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.vendor-requests.index')" :active="request()->routeIs('admin.vendor-requests.*')">
+                {{ __('Vendor Requests') }}
+            </x-responsive-nav-link>
             @endrole
             <x-responsive-nav-link href="/admin/products" :active="request()->is('admin/products*')">
                 {{ __('Products') }}
@@ -117,16 +117,16 @@
                 {{ __('Orders') }}
             </x-responsive-nav-link>
             @php
-                $hasPendingVendorRequest = \App\Models\VendorRequest::where('user_id', auth()->id())
-                    ->where('status', 0)
-                    ->exists();
+            $hasPendingVendorRequest = \App\Models\VendorRequest::where('user_id', auth()->id())
+            ->where('status', 0)
+            ->exists();
             @endphp
             @unlessrole('vendor')
-                @if(!$hasPendingVendorRequest)
-                    <x-responsive-nav-link :href="route('vendor-request.create')" :active="request()->routeIs('vendor-request.*')">
-                        {{ __('Become a Vendor') }}
-                    </x-responsive-nav-link>
-                @endif
+            @if(!$hasPendingVendorRequest)
+            <x-responsive-nav-link :href="route('vendor-request.create')" :active="request()->routeIs('vendor-request.*')">
+                {{ __('Become a Vendor') }}
+            </x-responsive-nav-link>
+            @endif
             @endunlessrole
         </div>
 
@@ -147,7 +147,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
