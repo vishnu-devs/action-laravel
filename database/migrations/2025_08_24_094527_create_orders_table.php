@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
-            $table->integer('quantity')->default(1);
+            $table->text('shipping_address')->nullable();
+            $table->string('payment_method')->default('cod');
+            $table->decimal('total_amount', 10, 2)->default(0.00);
+            $table->string('status')->default('processing');
+            $table->string('contact_name')->nullable();
+            $table->string('contact_email')->nullable();
+            $table->string('contact_phone')->nullable();
             $table->timestamps();
         });
-
     }
 
     /**
